@@ -1,10 +1,18 @@
 <p align="center"><img src="design/logo1.png" alt="clear" height="200px"></p>
 
 # Clear
+
 [![Build Status](https://travis-ci.org/anykeyh/clear.svg?branch=master)](https://travis-ci.org/anykeyh/clear) [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://anykeyh.github.io/clear/) [![GitHub release](https://img.shields.io/github/release/anykeyh/clear.svg)](https://github.com/anykeyh/clear/releases)
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+Note: this branch is currently experiencing the following error
+
+<p align="center"><img src="issue.png"></p>
 
 Clear is an ORM built specifically for PostgreSQL in Crystal.
 
@@ -30,9 +38,9 @@ The project is quite active and well maintened, too !
 
 In few seconds, you want to use Clear if:
 
-- [X] You want an expressive ORM. Put straight your thought to your code !
-- [X] You'd like to use advanced Postgres features without hassle
-- [X] You are at aware of the pro and cons of Active Records pattern
+- [x] You want an expressive ORM. Put straight your thought to your code !
+- [x] You'd like to use advanced Postgres features without hassle
+- [x] You are at aware of the pro and cons of Active Records pattern
 
 You don't want to use Clear if:
 
@@ -41,11 +49,11 @@ You don't want to use Clear if:
 - [ ] You need something which doesn't evolve, with breaking changes.
       Clear is still in alpha but starting to mature !
 
-
 ## Features
 
 - Active Record pattern based ORM
 - Expressiveness as mantra - even with advanced features like jsonb, regexp... -
+
 ```crystal
   # Like ...
   Product.query.where{ ( type == "Book" ) & ( metadata.jsonb("author.full_name") == "Philip K. Dick" ) }
@@ -60,6 +68,7 @@ You don't want to use Clear if:
   # Or even...
   ORM.query.where{ ( description =~ /(^| )awesome($| )/i ) }.first!.name # Clear! :-)
 ```
+
 - Proper debug information
   - Log and colorize query. Show you the last query if your code crash !
   - If failing on compile for a good reason, give proper explaination (or at least try)
@@ -90,7 +99,7 @@ Then:
 
 ### Model definition
 
-Clear offers some mixins, just include them in your classes to *clear* them:
+Clear offers some mixins, just include them in your classes to _clear_ them:
 
 #### Column mapping
 
@@ -119,7 +128,7 @@ end
 
 - `Number`, `String`, `Time`, `Boolean` and `Jsonb` structures are already mapped.
 - `Array` of primitives too.
-For other type of data, just create your own converter !
+  For other type of data, just create your own converter !
 
 ```crystal
 class Clear::Model::Converter::MyClassConversion
@@ -406,7 +415,6 @@ Clear is offering SQL logging tools, with SQL syntax colorizing in your terminal
 
 For activation, simply setup the logger to `DEBUG` level !
 
-
 ```
 Clear.logger.level = ::Logger::DEBUG
 ```
@@ -448,7 +456,6 @@ end
 ```
 
 ###### `NOT NULL DEFAULT ...` CASE
-
 
 There's a case when a column CAN be null inside Crystal, if not persisted,
 but CANNOT be null inside Postgres.
@@ -523,6 +530,7 @@ MyModel.new.save! #< Raise unexpected exception, not validation failure :(
 
 This validator will raise an exception, because first_name has never been initialized.
 To avoid this, we have many way:
+
 ```crystal
 # 1. Check presence:
 
@@ -634,15 +642,13 @@ up in migration
 Models add a layer of computation. Below is a sample with a very simple model
 (two integer column ), with fetching of 100k rows over 1M rows database, using --release flag:
 
-
-| Method                     |        | Total time            | Speed        |
-| --------------------------:|-------:|-----------------------|-------------:|
-|          Simple load 100k  |  12.04 |  ( 83.03ms) (± 3.87%) | 2.28× slower |
-|               With cursor  |   8.26 |  ( 121.0ms) (± 1.25%) | 3.32× slower |
-|           With attributes  |  10.30 |  ( 97.12ms) (± 4.07%) | 2.67× slower |
-| With attributes and cursor |   7.55 |  (132.52ms) (± 2.39%) | 3.64× slower |
-|                  SQL only  |  27.46 |  ( 36.42ms) (± 5.05%) |      fastest |
-
+|                     Method |       | Total time           |        Speed |
+| -------------------------: | ----: | -------------------- | -----------: |
+|           Simple load 100k | 12.04 | ( 83.03ms) (± 3.87%) | 2.28× slower |
+|                With cursor |  8.26 | ( 121.0ms) (± 1.25%) | 3.32× slower |
+|            With attributes | 10.30 | ( 97.12ms) (± 4.07%) | 2.67× slower |
+| With attributes and cursor |  7.55 | (132.52ms) (± 2.39%) | 3.64× slower |
+|                   SQL only | 27.46 | ( 36.42ms) (± 5.05%) |      fastest |
 
 - `Simple load 100k` is using an array to fetch the 100k rows.
 - `With cursor` is querying 1000 rows at a time
@@ -672,6 +678,7 @@ In order to run the test suite, you will need to have the PostgresSQL service lo
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
@@ -703,6 +710,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
