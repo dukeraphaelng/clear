@@ -693,7 +693,7 @@ module ModelSpec
       end
     end
 
-    it "can create a new model from json", focus: true do
+    it "can create a new model from json in a module", focus: true do
       temporary do
         reinit
 
@@ -701,13 +701,13 @@ module ModelSpec
         u1 = User.pure_from_json(u1_body.to_json)
         u1.first_name.should eq(u1_body["first_name"])
 
-        u2_body = {first_name: "Steve"}
-        u2 = User.new_from_json(u2_body.to_json)
-        u2.first_name.should eq(u2_body["first_name"])
+        # u2_body = {first_name: "Steve"}
+        # u2 = User.new_from_json(u2_body.to_json)
+        # u2.first_name.should eq(u2_body["first_name"])
 
-        u3_body = {first_name: "Caspian"}
-        u3 = User.update_from_json(u2, u3_body.to_json)
-        u3.first_name.should eq(u3_body["first_name"])
+        # u3_body = {first_name: "Caspian"}
+        # u3 = User.update_from_json(u2, u3_body.to_json)
+        # u3.first_name.should eq(u3_body["first_name"])
       end
     end
 

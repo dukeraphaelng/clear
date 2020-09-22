@@ -6,7 +6,6 @@ module Clear::Model::ClassMethods
           __generate_relations__
           __generate_columns__
           __register_factory__
-          __generate_from_json_methods__
         end
       end
 
@@ -14,7 +13,6 @@ module Clear::Model::ClassMethods
         __generate_relations__
         __generate_columns__
         __register_factory__
-        __generate_from_json_methods__
       end
 
       # Return the table name setup for this model.
