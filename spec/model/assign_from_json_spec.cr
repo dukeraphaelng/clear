@@ -2,11 +2,15 @@ require "spec"
 require "json"
 
 macro columns_to_instance_vars
+  class Missing
+    getter message : String = "unavailable"
+  end
+
   struct Assigner
     include JSON::Serializable
 
     {% for name, settings in COLUMNS %}
-      getter {{name.id}} : {{settings[:type]}}?
+      getter {{name.id}} : {{settings[:type]}}? | Missing = Missing.new("")
     {% end %}
 
     def json_to_new
@@ -20,7 +24,7 @@ macro columns_to_instance_vars
     macro finished
       def assign_model_from_json(model)
         {% for name, settings in COLUMNS %}
-          model.{{name.id}} = @{{name.id}}.not_nil! unless @{{name.id}}.nil?
+          model.{{name.id}} = @{{name.id}}.not_nil! if (!@{{name.id}}.nil?) && (typeof(@{{name.id}}) != Missing)
         {% end %}
 
         model
