@@ -23,7 +23,7 @@ macro columns_to_instance_vars
 
     {% for name, settings in COLUMNS %}
       @[JSON::Field(presence: true)]
-      getter {{name.id}} : {{settings[:type]}} {% unless settings[:type].nilable? %} | Nil {% end %}
+      getter {{name.id}} : {{settings[:type]}} {% unless settings[:type].resolve.nilable? %} | Nil {% end %}
     {% end %}
 
     # Create a new empty model and fill the columns with object's instance variables
@@ -41,8 +41,8 @@ macro columns_to_instance_vars
       protected def assign_columns(model)
         {% for name, settings in COLUMNS %}
           if @{{name.id}}_present
-            %value = @{{name}}
-            {% if settings[:type].nilable? %}
+            %value = @{{name.id}}
+            {% if settings[:type].resolve.nilable? %}
               model.{{name.id}} = %value
             {% else %}
               model.{{name.id}} = %value unless %value.nil?
