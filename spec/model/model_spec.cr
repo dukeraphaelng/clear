@@ -846,7 +846,7 @@ module ModelSpec
     end
   end
 
-  describe "Clear::Model::JSONDeserialize", focus: true do
+  describe "Clear::Model::JSONDeserialize" do
     it "can create a model json IO" do
       user_body = {first_name: "foo"}
       io = IO::Memory.new
