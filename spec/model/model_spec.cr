@@ -846,11 +846,12 @@ module ModelSpec
     end
   end
 
-  describe "Clear::Model::JSONDeserialize" do
+  describe "Clear::Model::JSONDeserialize", focus: true do
     it "can create a model json IO" do
       user_body = {first_name: "foo"}
       io = IO::Memory.new
       io << user_body.to_json
+      io.rewind
       user = User.from_json(io)
       user.first_name.should eq user_body["first_name"]
     end
@@ -870,9 +871,16 @@ module ModelSpec
     end
 
     it "sets nillable fields to nil" do
-      user = User.new({first_name: "Foo"})
+      user = User.new({first_name: "Foo", last_name: "Bar"})
+      user.set_from_json({last_name: nil}.to_json)
+      user.last_name.should be_nil
+    end
+
+    it "does not set unnillable fields to nil" do
+      user_body = {first_name: "Foo"}
+      user = User.new(user_body)
       user.set_from_json({first_name: nil}.to_json)
-      user.first_name.should be_nil
+      user.first_name.should eq user_body["first_name"]
     end
 
     it "create and update a model from json" do

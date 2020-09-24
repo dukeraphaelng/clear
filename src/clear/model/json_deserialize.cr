@@ -24,6 +24,9 @@ macro columns_to_instance_vars
     {% for name, settings in COLUMNS %}
       @[JSON::Field(presence: true)]
       getter {{name.id}} : {{settings[:type]}} {% unless settings[:type].resolve.nilable? %} | Nil {% end %}
+
+      @[JSON::Field(ignore: true)]
+      getter? {{name.id}}_present : Bool
     {% end %}
 
     # Create a new empty model and fill the columns with object's instance variables
