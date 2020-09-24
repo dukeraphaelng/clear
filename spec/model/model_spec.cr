@@ -849,7 +849,7 @@ module ModelSpec
   describe "Clear::Model::JSONDeserialize" do
     it "can create a model json IO" do
       user_body = {first_name: "foo"}
-      io = IO::Memory
+      io = IO::Memory.new
       io << user_body.to_json
       user = User.from_json(io)
       user.first_name.should eq user_body["first_name"]
