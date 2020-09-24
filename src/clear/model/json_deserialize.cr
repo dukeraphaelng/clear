@@ -17,11 +17,13 @@ end
 
 # Used internally to deserialise json
 macro columns_to_instance_vars
+  # :nodoc:
   struct Assigner
     include JSON::Serializable
 
     {% for name, settings in COLUMNS %}
-      getter {{name.id}} : {{settings[:type]}}?
+      @[JSON::Field(presence: true)]
+      getter {{name.id}} : {{settings[:type]}} {% unless settings[:type].nilable? %} | Nil {% end %}
     {% end %}
 
     # Create a new empty model and fill the columns with object's instance variables
@@ -38,7 +40,14 @@ macro columns_to_instance_vars
       # Assign properties to the model inputted with object's instance variables
       protected def assign_columns(model)
         {% for name, settings in COLUMNS %}
-          model.{{name.id}} = @{{name.id}}.not_nil! unless @{{name.id}}.nil?
+          if @{{name.id}}_present
+            %value = @{{name}}
+            {% if settings[:type].nilable? %}
+              model.{{name.id}} = %value
+            {% else %}
+              model.{{name.id}} = %value unless %value.nil?
+            {% end %}
+          end
         {% end %}
 
         model
