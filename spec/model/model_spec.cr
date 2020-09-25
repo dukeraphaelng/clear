@@ -846,7 +846,7 @@ module ModelSpec
     end
   end
 
-  describe "Clear::Model::JSONDeserialize" do
+  describe "Clear::Model::JSONDeserialize", focus: true do
     it "can create a model json IO" do
       user_body = {first_name: "foo"}
       io = IO::Memory.new user_body.to_json
@@ -900,6 +900,13 @@ module ModelSpec
         u4 = u3.update_from_json!(u4_body.to_json)
         u4.first_name.should eq(u4_body["first_name"])
       end
+    end
+
+    it "should allow strong parameters" do
+      user_body = {first_name: "George", last_name: "Washington"}
+      user = User.from_json(user_body.to_json, ["first_name"])
+      user.first_name.should eq(user_body["first_name"])
+      user.to_h.has_key?("last_name").should eq(false)
     end
   end
 end
