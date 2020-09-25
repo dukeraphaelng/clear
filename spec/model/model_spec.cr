@@ -846,19 +846,10 @@ module ModelSpec
     end
   end
 
-<<<<<<< HEAD
-  describe "Clear::Model::JSONDeserialize", focus: true do
-    it "can create a model json IO" do
-      user_body = {first_name: "foo"}
-      io = IO::Memory.new user_body.to_json
-=======
   describe "Clear::Model::JSONDeserialize" do
     it "can create a model json IO" do
       user_body = {first_name: "foo"}
-      io = IO::Memory.new
-      io << user_body.to_json
-      io.rewind
->>>>>>> 4c07f32aecb83ee0686e2e77d11fc94ef53a2c90
+      io = IO::Memory.new user_body.to_json
       user = User.from_json(io)
       user.first_name.should eq user_body["first_name"]
     end
