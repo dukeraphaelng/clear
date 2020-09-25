@@ -41,9 +41,9 @@ macro columns_to_instance_vars
 
     macro finished
       # Assign properties to the model inputted with object's instance variables
-      protected def assign_columns(model, permit, mass_assignment)
+      protected def assign_columns(model, permit : Enumerable(String | Symbol), mass_assignment : Bool)
         {% for name, settings in COLUMNS %}
-          if self.{{name.id}}_present? && ((mass_assignment && permit.size == 0) ? true : permit.includes?({{name}}))
+          if self.{{name.id}}_present? && ((mass_assignment && permit.size == 0) ? true : (permit.any? { |p| p == {{name.stringify.id}} || p == {{name.id.symbolize}} }))
             %value = self.{{name.id}}
             {% if settings[:type].resolve.nilable? %}
               model.{{name.id}} = %value
@@ -61,7 +61,7 @@ macro columns_to_instance_vars
   # Create a new empty model and fill the columns from json
   #
   # Returns the new model
-  def self.from_json(string_or_io : String | IO, permit : Array(String) = [] of String, mass_assignment : Bool = true)
+  def self.from_json(string_or_io : String | IO, permit : Enumerable(String | Symbol) = [] of String | Symbol, mass_assignment : Bool = true)
     Assigner.from_json(string_or_io).create(permit, mass_assignment)
   end
 
@@ -69,7 +69,7 @@ macro columns_to_instance_vars
   #
   # The model may not be saved due to validation failure;
   # check the returned model `errors?` and `persisted?` flags.
-  def self.create_from_json(string_or_io : String | IO, permit : Array(String) = [] of String, mass_assignment : Bool = true)
+  def self.create_from_json(string_or_io : String | IO, permit : Enumerable(String | Symbol) = [] of String | Symbol, mass_assignment : Bool = true)
     mdl = self.from_json(string_or_io, permit, mass_assignment)
     mdl.save
     mdl
@@ -79,24 +79,24 @@ macro columns_to_instance_vars
   #
   # Returns the newly inserted model
   # Raises an exception if validation failed during the saving process.
-  def self.create_from_json!(string_or_io : String | IO, permit : Array(String) = [] of String, mass_assignment : Bool = true)
+  def self.create_from_json!(string_or_io : String | IO, permit : Enumerable(String | Symbol) = [] of String | Symbol, mass_assignment : Bool = true)
     self.from_json(string_or_io, permit, mass_assignment).save!
   end
 
   # Set the fields from json passed as argument
-  def set_from_json(string_or_io : String | IO, permit : Array(String) = [] of String, mass_assignment : Bool = true)
+  def set_from_json(string_or_io : String | IO, permit : Enumerable(String | Symbol) = [] of String | Symbol, mass_assignment : Bool = true)
     Assigner.from_json(string_or_io).update(self, permit, mass_assignment)
   end
 
   # Set the fields from json passed as argument and call `save` on the object
-  def update_from_json(string_or_io : String | IO, permit : Array(String) = [] of String, mass_assignment : Bool = true)
+  def update_from_json(string_or_io : String | IO, permit : Enumerable(String | Symbol) = [] of String | Symbol, mass_assignment : Bool = true)
     mdl = set_from_json(string_or_io, permit, mass_assignment)
     mdl.save
     mdl
   end
 
   # Set the fields from json passed as argument and call `save!` on the object
-  def update_from_json!(string_or_io : String | IO, permit : Array(String) = [] of String, mass_assignment : Bool = true)
+  def update_from_json!(string_or_io : String | IO, permit : Enumerable(String | Symbol) = [] of String | Symbol, mass_assignment : Bool = true)
     set_from_json(string_or_io, permit, mass_assignment).save!
   end
 end

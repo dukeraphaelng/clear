@@ -902,9 +902,16 @@ module ModelSpec
       end
     end
 
-    it "should allow strong parameters" do
+    it "should allow strong parameters using string" do
       user_body = {first_name: "George", last_name: "Washington"}
       user = User.from_json(user_body.to_json, ["first_name"])
+      user.first_name.should eq(user_body["first_name"])
+      user.to_h.has_key?("last_name").should eq(false)
+    end
+
+    it "should allow strong parameters using symbols" do
+      user_body = {first_name: "George", last_name: "Washington"}
+      user = User.from_json(user_body.to_json, [:first_name])
       user.first_name.should eq(user_body["first_name"])
       user.to_h.has_key?("last_name").should eq(false)
     end
