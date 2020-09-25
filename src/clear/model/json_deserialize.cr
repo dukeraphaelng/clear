@@ -100,30 +100,3 @@ macro columns_to_instance_vars
     set_from_json(string_or_io, permit, mass_assignment).save!
   end
 end
-
-# , ignore: !@permit.includes?({{name.id}})
-# property permit : Array(String | Symbol) = [] of String | Symbol
-# assigner = Assigner.new
-# # assigner.permit = permit
-
-# # # #
-# , permit : Array(String)
-
-####
-
-# def ignore_fields(permit : Array(IO) = [] of IO)
-#   for attr in permit do
-#     {% if COLUMNS.keys.includes?(attr) %}
-#       COLUMNS[{{attr}}]["ignore"] = false
-#     {% end %}
-#   end
-# end
-
-# {% COLUMNS[name]["ignore"] = true %}
-
-# #  Ignore is set to true if the field is not inside the permit array
-
-# Assigner.ignore_fields(permit, mass_assignment).from_json(string_or_io).create
-
-# ignore_permit = mass_assignment ? true : permit.includes?(name)
-# ignore_permit = mass_assignment || permit.includes?(name)
