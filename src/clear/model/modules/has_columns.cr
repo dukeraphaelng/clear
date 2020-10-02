@@ -181,6 +181,7 @@ module Clear::Model::HasColumns
         crystal_variable_name: name.var,
         presence:              presence,
         mass_assign:           mass_assign,
+        default:               name.value,
       }
     %}
   end
@@ -432,3 +433,17 @@ module Clear::Model::HasColumns
 
   end
 end
+
+# Clear::Model::Column({{type}}, {{converter}}).new({{db_name}},
+# has_db_default: {{has_db_default}} )
+
+# {% if (settings[:type].resolve.nilable? && settings[:default].nil?) %}
+# @{{var_name}}_column = nil
+# {% elsif (!settings[:type].resolve.nilable? && !settings[:default].nil?) %}
+# @{{var_name}}_column = {{settings[:default]}}
+# {% end %}
+
+# = {% if (settings[:type].resolve.nilable? && settings[:default].nil?) || (!settings[:type].resolve.nilable? && !settings[:default].nil?) %} {{settings[:default]}} {% else %} Clear::Model::Column({{type}}, {{converter}}).new({{db_name}}, has_db_default: {{has_db_default}} ) {% end %}
+# \{% if !settings[:type].resolve.nilable? && !settings[:default].nil? %}
+# @\{{settings[:crystal_variable_name]}}_column.value = \{{settings[:default]}}
+# \{% end %}

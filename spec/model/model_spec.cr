@@ -926,4 +926,21 @@ module ModelSpec
       end
     end
   end
+
+  class Client
+    include Clear::Model
+
+    column id : Int32, primary: true, presence: false
+
+    column name : String?
+    column registered : Bool? = false
+  end
+
+  describe "Clear::Model::HasColumns" do
+    it "should assign default value at the model level", focus: true do
+      client = Client.new({name: "George"})
+      pp! client
+      # client.registered.should eq(false)
+    end
+  end
 end

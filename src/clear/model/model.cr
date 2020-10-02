@@ -41,7 +41,7 @@ module Clear::Model
     {% raise "Do NOT include Clear::Model on struct-like objects.\n" +
              "It would behave very strangely otherwise." unless @type < Reference %}    # <~ Models are mutable objects;
                                                                                         # they do not work with structures which are immuable
-
+ 
 
     extend Clear::Model::HasHooks::ClassMethods
 
@@ -49,20 +49,28 @@ module Clear::Model
 
     def initialize
       @persisted = false
+
+      set_default_macro
     end
 
     def initialize(h : Hash(String, _), @cache : Clear::Model::QueryCache? = nil, @persisted = false, fetch_columns = false )
       @attributes.merge!(h) if fetch_columns
 
       reset(h)
+
+      set_default_macro
     end
 
     def initialize(json : ::JSON::Any, @cache : Clear::Model::QueryCache? = nil, @persisted = false )
       reset(json.as_h)
+
+      set_default_macro
     end
 
     def initialize(t : NamedTuple, @persisted = false)
       reset(t)
+
+      set_default_macro
     end
 
     # Force to clean-up the caches for the relations
@@ -89,3 +97,26 @@ module Clear::Model
 end
 
 require "./reflection/**"
+
+macro set_default
+  macro finished
+    set_default_macro
+  end
+
+  macro inherited
+    macro finished
+      set_default_macro
+    end
+  end
+end
+
+macro set_default_macro
+  {% for name, settings in COLUMNS %}
+    {% if settings[:default] %}
+      @{{name.id}}_column.value = {{settings[:default]}}
+    {% end %}
+  {% end %}
+end
+
+# (settings[:type].resolve.nilable? && settings[:default].nil?) || (!settings[:type].resolve.nilable? && !settings[:default].nil?)
+# default != undefined
