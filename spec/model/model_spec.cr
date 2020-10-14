@@ -946,7 +946,7 @@ module ModelSpec
     end
   end
 
-  describe "BigDecimal / Numeric column in Migration", focus: true do
+  describe "BigDecimal / Numeric column in Migration" do
     it "should create a new model with BigDecimal fields" do
       temporary do
         reinit

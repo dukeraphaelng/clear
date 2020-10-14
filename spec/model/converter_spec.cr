@@ -87,7 +87,7 @@ module ConverterSpec
       converter.to_db(nil).should eq(nil)
     end
   end
-  describe "Clear::Model::Converter::BigDecimal", focus: true do
+  describe "Clear::Model::Converter::BigDecimal" do
     converter = Clear::Model::Converter::BigDecimalConverter
 
     it "converts to column" do
