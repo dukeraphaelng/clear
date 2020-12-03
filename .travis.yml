@@ -1,13 +1,7 @@
 language: crystal
 script:
-- make test
+- ENV=dockercompose HOST=db docker-compose up --build --exit-code-from orm
 - crystal docs
-services:
-- postgresql
-before_script:
-- psql -V
-addons:
-  postgresql: '9.6'
 deploy:
   provider: pages
   skip_cleanup: true
