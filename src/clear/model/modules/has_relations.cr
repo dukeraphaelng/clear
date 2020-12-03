@@ -51,7 +51,7 @@ module Clear::Model::HasRelations
 
         cache: Bool,                        # whether the model will cache the relation
 
-        mass_assign: Bool, # whether the model will be mass assigned from JSON
+        mass_assign: Bool?,                 # whether the model will be mass assigned from JSON
       }
     end
   end

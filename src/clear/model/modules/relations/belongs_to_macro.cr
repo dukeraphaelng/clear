@@ -20,7 +20,7 @@ module Clear::Model::Relations::BelongsToMacro
 
       __define_association_cache__({{method_name}}, {{relation_type}})
 
-      column {{foreign_key}} : {{foreign_key_type}}{{ nilable ? "?".id : "".id }}, primary: {{primary}}, presence: false, mass_assign: mass_assign
+      column {{foreign_key}} : {{foreign_key_type}}{{ nilable ? "?".id : "".id }}, primary: {{primary}}, presence: false, mass_assign: {{mass_assign}}
 
       # :nodoc:
       def self.__relation_filter_{{method_name}}__(query)
