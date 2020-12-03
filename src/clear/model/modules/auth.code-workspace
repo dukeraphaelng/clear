@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../portal-authentication"
+		},
+		{
+			"path": "../../../../../active-directory-b2c-javascript-msal-singlepageapp"
+		},
+		{
+			"path": "../../../.."
+		}
+	],
+	"settings": {}
+}

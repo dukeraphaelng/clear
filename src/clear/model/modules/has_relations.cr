@@ -50,6 +50,8 @@ module Clear::Model::HasRelations
         presence: Bool,                     # For belongs_to, check or not the presence
 
         cache: Bool,                        # whether the model will cache the relation
+
+        mass_assign: Bool, # whether the model will be mass assigned from JSON
       }
     end
   end
@@ -162,9 +164,14 @@ module Clear::Model::HasRelations
   #   belongs_to user : User, foreign_key: "the_user_id"
   #
   # ```
+  # * `mass_assign : Bool (default = true)`: Use this option to turn on/ off mass assignment
+  #   when instantiating or updating a new model from json through `.from_json` methods from
+  #   the `Clear::Model::JSONDeserialize` module.
+  #
+
   macro belongs_to(name, foreign_key = nil, cache = true, primary = false,
                    foreign_key_type = Int64, polymorphic = false,
-                   polymorphic_type_column = nil, presence = true)
+                   polymorphic_type_column = nil, presence = true, mass_assign = true)
 
     {%
       foreign_key = "#{foreign_key.id}" if foreign_key
@@ -196,8 +203,9 @@ module Clear::Model::HasRelations
         primary:  primary,
         presence: presence,
 
-        through: nil,
-        cache:   cache,
+        through:     nil,
+        cache:       cache,
+        mass_assign: mass_assign,
       }
     %}
   end
