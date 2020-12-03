@@ -81,7 +81,7 @@ class Post
   has_many tag_relations : Tag, through: :post_tags, relation: :tag
 
   belongs_to user : User, foreign_key_type: Int32
-  belongs_to category : Category?, foreign_key_type: Int32
+  belongs_to category : Category?, foreign_key_type: Int32, mass_assign: false
 end
 
 class UserInfo
